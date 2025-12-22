@@ -1,1 +1,19 @@
+Project Goal:
 
+The goal of this project is to perform a meaningful analysis and build data visualizations, which will solve 2 key issues. Firstly, this analysis will allow Florida public shelters to prepare for the evacuation of individuals with special needs based on data-driven reports. Secondly, it will allow researchers from University of South Florida School of Aging Studies to have visilibiliy on data trends. Access to this insighttful and visually structured information will facilitate and accelerate research in the field. 
+
+Context: there are 4.5 million care recipients in Florida. These are individuals with various conditions who have special needs in the event of natural disaster in the state. Many residents live in mobile homes and flood zones of different risks. Historically, there have been millions of evacuees that seek shelters in Florida when the hurricane is approaching the state. 
+
+Project Requirements:
+
+- Obtain postgresql database access from USF professor and engineering department team
+- Save database design (it's permitted to publish it on the open github repo) 
+- Write code to fetch data from the database, run analysis and present visual trends:
+-- Build a visual chart for distribution of cases for risky living condition (flood zone, mobile home and its combination)
+-- Build a real live tracker of how many care recipients and care givers have been registered via the original disaster application
+-- Build a geomap dashboard with total cases per city (city level only, zip code in the future)
+-- Build an overview table with all fundamental metrics: total cases, average age, high risks cases, 
+-- Identify number of severities of care recipients conditions at city level
+-- Build a chart that would help shelter staff to allocate resources based on people's needs
+- Recommended programming languages: SQL, python, javascript
+- Note: there must not be any real resident information exposed for the public-facing dashboard (the database stores people's names, addresses, etc)
