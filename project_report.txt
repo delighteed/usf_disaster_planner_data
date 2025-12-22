@@ -1,1 +1,23 @@
+- Step 1: 
+
+- Requirement gathering. I gathered the requirements from Dr. Peterson and documented them in project_requirements.txt failure
+
+- Step 2: 
+
+- I received access to the private application repository. I got permission to publish the database design and added the design SQL code to the original_app_db_design.sql file
+-- This SQL database design file helps me to understand the table / schemas so that I can build efficient queries and make changes such that the data and the output of my analysis makes sense. 
+
+- Step 3: 
+
+- After studying the database design, I found out few problems and reported to Dr. Peterson that 2 columns are necessary here for more insightful analysis that previosly haven't been added to the database: condition category and condition severity. 
+
+- Step 4: 
+
+- I've used LLM to generate sample data based on examples of real data to simulate the real dataset.
+-- I used GPT 5.2 model to generate a vast amount of such data for the experiment. I used the prompt that I documented on synthetic_data_prompt.txt and the output of the model is documented on the insert_synthetic_data.sql
+
+
+- Step 5:
+- Data Engineering work: I performed some data cleaning. For example, GPT created records with non-existing evacuation place values such as "ChurchShelter", I also ran few DELETE queries to remove non-sensible records (data generated with information of people from out of state). Note: I have a clean dataset in the insert_synthetic_data.sql file with final version of the data I used. 
+
 
