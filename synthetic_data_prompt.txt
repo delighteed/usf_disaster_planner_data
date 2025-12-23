@@ -1,0 +1,120 @@
+Context: there is a web application "disaster planner" designed to help care givers and care recipients with special needs to evacuate from state of Florida in the event of hurricanes and flooding. There are a separate repositories for fronend and backend code.
+
+Here are the 3 tables used for the application: caregiver, carerecipient, preparation. The below is the design of the tables: 
+
+-- Table: public.caregiver
+
+(
+    caregiver_id integer NOT NULL DEFAULT nextval('caregiver_caregiver_id_seq'::regclass),
+    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    age integer NOT NULL,
+    gender character(1) COLLATE pg_catalog."default" NOT NULL,
+    phone character(10) COLLATE pg_catalog."default",
+    email character varying(50) COLLATE pg_catalog."default",
+    street character varying(50) COLLATE pg_catalog."default",
+    city character varying(50) COLLATE pg_catalog."default",
+    state character(2) COLLATE pg_catalog."default",
+    zip character varying(5) COLLATE pg_catalog."default",
+    create_date timestamp without time zone,
+    CONSTRAINT caregiver_pkey PRIMARY KEY (caregiver_id)
+)
+
+
+-- Table: public.carerecipient
+
+(
+    carerecipient_id integer NOT NULL DEFAULT nextval('carerecipient_carerecipient_id_seq'::regclass),
+    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    age integer NOT NULL,
+    gender character(1) COLLATE pg_catalog."default" NOT NULL,
+    condition character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    special_needs character varying(500) COLLATE pg_catalog."default",
+    create_date timestamp without time zone,
+    caregiver_id integer,
+    CONSTRAINT carerecipient_pkey PRIMARY KEY (carerecipient_id),
+    CONSTRAINT carerecipient_caregiver_id_fkey FOREIGN KEY (caregiver_id)
+        REFERENCES public.caregiver (caregiver_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+-- Table: public.preparation
+
+(
+    preparation_id integer NOT NULL DEFAULT nextval('preparation_preparation_id_seq'::regclass),
+    mobile_home character(1) COLLATE pg_catalog."default" NOT NULL,
+    flood_zone character(1) COLLATE pg_catalog."default",
+    serious_flood_zone character(1) COLLATE pg_catalog."default" NOT NULL,
+    area character(1) COLLATE pg_catalog."default" NOT NULL,
+    garage character(1) COLLATE pg_catalog."default" NOT NULL,
+    garage_door character(1) COLLATE pg_catalog."default",
+    covers character(1) COLLATE pg_catalog."default" NOT NULL,
+    evacuation_place character varying(50) COLLATE pg_catalog."default",
+    other_place character varying(50) COLLATE pg_catalog."default",
+    evacuation_vehicle character varying(50) COLLATE pg_catalog."default",
+    clear_route character(1) COLLATE pg_catalog."default",
+    time_to_destination integer,
+    fuel integer,
+    care_recipient_wait_time integer,
+    purchased_flight_tickets character(1) COLLATE pg_catalog."default",
+    purchased_bus_tickets character(1) COLLATE pg_catalog."default",
+    favorite_foods character varying(50) COLLATE pg_catalog."default",
+    fun_items character varying(50) COLLATE pg_catalog."default",
+    favorite_items character varying(50) COLLATE pg_catalog."default",
+    other_items character varying(50) COLLATE pg_catalog."default",
+    create_date timestamp without time zone NOT NULL,
+    caregiver_id integer,
+    CONSTRAINT preparation_pkey PRIMARY KEY (preparation_id),
+    CONSTRAINT preparation_caregiver_id_fkey FOREIGN KEY (caregiver_id)
+        REFERENCES public.caregiver (caregiver_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+Note: The relationship between caregiver carerecipient and preparation is 1:1:1
+Note: I also added 2 more columns to the carerecipient table:
+
+ALTER TABLE carerecipient
+ADD COLUMN condition_category VARCHAR(32),
+ADD COLUMN condition_severity VARCHAR(16);
+
+Caregiver table is used to store data about person who is taking care of a care recipient (usually an elder patient who has a health issue). Use the sql file to learn more about its data type.
+
+example of row for caregiver:
+
+-- 1	"Freddie"	"Doe"	47	"M"		"fredd1900@gmail.com"	"1224 122th St. NE"	"Bradenton"	"FL"	"34212"	"2025-01-10 21:00:00.59191"
+
+Carerecipient is a table used for care recipients. There are various types health issues such as anxiety, Alzheimer’s, panic disorders, diabetes,
+
+example row:
+
+-- 1	"Delilah"	"Ferguson"	80	"F"	"Alzheimers" 'memory', 'high', 'specialFoods'	"2025-01-05 18:17:57.11424"	
+
+preparation table is about the preparation and living conditions of the caregiver and carerecipient:
+- whether the house is a mobile home, whether the house has garage, 
+- whether the caregiver purchased flight tickets (to evacuate from the area)
+- what's the evacuation destination (friendsHouse, hotel, publicShelter, etc.) 
+- favorite items of the care recipient, their favorite food, etc. 
+
+example rows:
+
+-- 1	"Y"	"N"	"Y"	"N"	"N"	"N"	"N"	"friendsHouse"		"car"	"N"	23	23	2	"N"	"N"	"fig"	"run"	"pillow"		"2025-02-17 20:48:47.368797"	129
+-- 2	"N"	"N"	"N"	"Y"	"Y"	"Y"	"Y"	"hotel"		"bus"	"N"	56		45	"N"	"N"	"soup"	"games"	"pillow"		"2025-02-17 21:00:16.59191"	130
+-- 3	"N"	"N"	"N"	"N"	"N"	"N"	"N"	"publicShelter"		"bus"	"N"	56	23	40	"N"	"N"	"soup"	"top"	"blanket"		"2025-02-17 21:06:05.793366"	131
+
+For condition category, use the following values: memory, mobility, respiratory, cardiac, mental_health, sensory, medical_other 
+For condition severity, use the following values: low, moderate, high, critical.
+For condition, use the below table to generate the condition value based ont the category:
+
+memory: dementia, Alzheimer’s, confusion, wandering 
+mobility: difficulty walking, wheelchair use, transfers
+respiratory: asthma, COPD, oxygen use
+cardiac: heart disease, heart failure
+mental_health: anxiety, panic disorders
+sensory: vision, impairment, hearing impairment
+medical_other: diabetes, dialysis, rare conditions
+
+
+Based on the examples above and the sql design, please generate a file with insert statement with "synthetic data" (data generated using this prompt used as records stored in the database to simulate real world records).
