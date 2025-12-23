@@ -20,4 +20,32 @@
 - Step 5:
 - Data Engineering work: I performed some data cleaning. For example, GPT created records with non-existing evacuation place values such as "ChurchShelter", I also ran few DELETE queries to remove non-sensible records (data generated with information of people from out of state). Note: I have a clean dataset in the insert_synthetic_data.sql file with final version of the data I used. 
 
+- Step 6:
+- I started writing SQL queries and tested them within pgadmin (dbms software that connects directly to the database and allows to write code to fetch data from the db).
+-- Analysis Query #1: Overall Dashboard Summary Statistics
+--- This query is calculating basic information such as number of total cases registered, high risk cases, average care recipient age and percentage of evacuation ready residents
+-- Analysis Query #2: Living Conditions Risk Score for GeoMap Visualization
+--- The second query is designed to work with a geomap plot that presents a map with cities that have care recipients (evacuees)
+-- Analysis Query #3: Living Conditions Risk per City
+--- The third query is calculating total cases, dangerous cases such as serious flood zone, mobile homes, and areas without clear route to the evacuation zone
+-- Analysis Query #4: High-Risk Households by Flood Risk and Housing Type
+--- the fourth query is calculating the high risk cases. In the context of this data, high risk is considered a case where it meets either criteria: mobile home as a home type, flood zone (serious or regular)
+--- the fourth query can be used for both a table and pie chart visualizations
+-- Analysis Query #5: Estimated Resource Allocation for Shelters per City
+--- the fifth query is used to estimate number and type of resources needed in sheleter for each of the city from registered data
+-- Analysis Query #6: Basic Care Recipients Overview/Information
+--- the sixth query is just fetching information with relevant fields of care recipients such as full name, age, gender, condition, category, severity, special needs, and registration date.
+-- Analysis Query #7: Conditions and Avg Age per Gender
+--- the seventh query is fetching total number of cases as well as case for each conditon sorted by gender (male and female)
+-- Analysis Query #8: Severity and Age Correlation
+--- the eighth query is analyzing possible correlation between age and severity of the health condition of the care recipients. I used a plot with x and y axes, where x is age and severity is 4 (severity was mapped from text to numbers)
+-- Analysis Query #9: Cases per Condition and Severity Levels
+--- the nineth query is calculating number of cases for each condition and severity levels. 
+-- Analysis Query #10: Care Recipient Condition Severity per City
+--- The tenth query is calculating level of condition severity per city. This may be useful for researchers and shelter staff. 
+- All queries are saved in database_analysis_queries.sql 
+- Once table output was verified, I moved the SQL code to the open-source Grafana dashboards. The public version is available at https://yeskenovtemirkhan.grafana.net/d/yenglps/disaster-planner-care-recipients?orgId=1&from=2025-01-15T10:35:00.000Z&to=2025-04-10T14:30:00.000Z&timezone=browser 
+
+- Step 7: sent the version 1 of this dashboard directly to the professor for initial feedback.
+
 
